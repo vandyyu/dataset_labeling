@@ -1,9 +1,7 @@
 # encoding: utf-8
 #TODO : 优化文本展示的位置
 """
-使用自己拍摄的身份证视频，制作身份证数据集
-如果发现标注错了，请把output_dir中的错的图片移动到images_root下，同时删除output_dir下文件的对应行。
-如果仅仅是文字错了标注框是对的，请在output_dir目录下直接修改文本文件就行了。
+嗯。。OCR相关标注
 """
 __author__ = "yuwanli"
 import tkinter as tk
@@ -478,8 +476,6 @@ def save(save_path, boxes, texts):
 def batch_labeling_generator(images_root, labels_root=None, ignores=[]):
     """
     批量图片标注样本生成器。
-    如果没有预标注文件，则label_info_path=None，所有图片重新标注。
-    如果预标注文件中某张图片存在，但是预标注信息缺失，会对图片从头标注，因此label_info返回None
     :param images_root: 包含所有图片的目录
     :param labels_root: 预标记的标签目录，和ICDAR数据集一致，None表示不存在预标记
     :return: 待标注图片路径，预标记的文件路径
@@ -534,7 +530,7 @@ def batch_labeling(images_root, labels_root, output_dir, scaling=0.5):
 
 
 if __name__ == '__main__':
-    images_root = r"D:\temp\samples\images"
-    labels_root = r"D:\temp\samples\labels"
-    output_dir = r"D:\temp\samples\labels_correct"
+    images_root = r"samples\images"
+    labels_root = r"samples\labels"  # 如果没有可以为None
+    output_dir = r"samples\labels_correct"
     batch_labeling(images_root, labels_root, output_dir, scaling=1.0)
