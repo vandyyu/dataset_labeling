@@ -419,7 +419,7 @@ class LabelAdjuster(object):
         :return: 校正后的boxes以及文本，此box返回后是相对于原始图像尺寸的坐标，
                   而在对象中的self.boxes依然保持相对于缩放后图像尺寸的坐标。
         """
-        cv2.namedWindow(self.win_name, cv2.WINDOW_GUI_NORMAL)
+        cv2.namedWindow(self.win_name, cv2.WINDOW_GUI_NORMAL|cv2.WINDOW_AUTOSIZE)
         # cv2.resizeWindow(self.win_name, 800, 600)
         cv2.setMouseCallback(self.win_name, self.onMouse)
 
@@ -535,4 +535,4 @@ if __name__ == '__main__':
     images_root = os.path.join(cur_dir, "samples", "images")
     labels_root = os.path.join(cur_dir, "samples", "labels")  # 如果没有可以为None
     output_dir = os.path.join(cur_dir, "samples", "labels_correct")
-    batch_labeling(images_root, labels_root, output_dir, scaling=0.4)
+    batch_labeling(images_root, labels_root, output_dir, scaling=0.5)
