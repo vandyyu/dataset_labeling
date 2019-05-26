@@ -419,10 +419,11 @@ class LabelAdjuster(object):
         :return: 校正后的boxes以及文本，此box返回后是相对于原始图像尺寸的坐标，
                   而在对象中的self.boxes依然保持相对于缩放后图像尺寸的坐标。
         """
-        cv2.namedWindow(self.win_name)
+        cv2.namedWindow(self.win_name, cv2.WINDOW_GUI_NORMAL)
+        # cv2.resizeWindow(self.win_name, 800, 600)
         cv2.setMouseCallback(self.win_name, self.onMouse)
 
-        while self.cur_key != 32 and cv2.getWindowProperty(self.win_name, 0) != -1:
+        while self.cur_key != 32 and cv2.getWindowProperty(self.win_name, cv2.WND_PROP_VISIBLE) != 0:
             # 切记一定不要这样连续的、无条件的去直接替换(刷新原图)，因为这样极快的刷新频率，
             # 会使得任何界面操作(例如画线、画矩形)都会被立马覆盖成原图，导致界面会一直不变。
             # 要在具体的动作事件中添加刷新(替换)操作。
@@ -517,7 +518,7 @@ def batch_labeling(images_root, labels_root, output_dir, scaling=0.5):
         boxes, texts = make_label(win_name, image_path, label_path, scaling=scaling, destroy_win=False)
 
         # 点击关闭窗口，退出标注
-        if cv2.getWindowProperty(win_name, 0) == -1:
+        if cv2.getWindowProperty(win_name, cv2.WND_PROP_VISIBLE) == 0:
             break
         cv2.destroyWindow(win_name)
 
@@ -530,7 +531,8 @@ def batch_labeling(images_root, labels_root, output_dir, scaling=0.5):
 
 
 if __name__ == '__main__':
-    images_root = r"samples\images"
-    labels_root = r"samples\labels"  # 如果没有可以为None
-    output_dir = r"samples\labels_correct"
-    batch_labeling(images_root, labels_root, output_dir, scaling=1.0)
+    cur_dir = os.getcwd()
+    images_root = os.path.join(cur_dir, "samples", "images")
+    labels_root = os.path.join(cur_dir, "samples", "labels")  # 如果没有可以为None
+    output_dir = os.path.join(cur_dir, "samples", "labels_correct")
+    batch_labeling(images_root, labels_root, output_dir, scaling=0.4)
